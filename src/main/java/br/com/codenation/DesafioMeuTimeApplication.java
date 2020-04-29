@@ -32,17 +32,8 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
     }
 
     @Desafio("incluirJogador")
-    public void incluirJogador(Long id, Long idTime, String nome, LocalDate dataNascimento, Integer nivelHabilidade, BigDecimal salario)
-            throws IllegalArgumentException, TimeNaoEncontradoException, IdentificadorUtilizadoException {
-        if (id < 0 || idTime < 0 || nivelHabilidade < 0 || nivelHabilidade > 100) {
-            throw new IllegalArgumentException();
-        }
-        if (!existeTime(idTime)) {
-            throw new TimeNaoEncontradoException("Erro! Não foi encontrado time com o Id informado");
-        }
-        if (existeJogador(id)) {
-            throw new IdentificadorUtilizadoException("Erro! Já existe um jogador com este Id");
-        }
+    public void incluirJogador(Long id, Long idTime, String nome, LocalDate dataNascimento, Integer nivelHabilidade, BigDecimal salario) {
+        validarJogador(id, idTime, nivelHabilidade);
 
         for (Time time : listaTimes) {
             if (time.getId() == idTime) {
@@ -282,5 +273,18 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
 
     private Boolean existeJogador(Long id) {
         return listaTimes.stream().anyMatch(c -> c.existeJogador(id));
+    }
+
+    private void validarJogador(Long id, Long idTime, Integer nivelHabilidade)
+            throws IllegalArgumentException, TimeNaoEncontradoException, IdentificadorUtilizadoException {
+        if (id < 0 || idTime < 0 || nivelHabilidade < 0 || nivelHabilidade > 100) {
+            throw new IllegalArgumentException();
+        }
+        if (!existeTime(idTime)) {
+            throw new TimeNaoEncontradoException("Erro! Não foi encontrado time com o Id informado");
+        }
+        if (existeJogador(id)) {
+            throw new IdentificadorUtilizadoException("Erro! Já existe um jogador com este Id");
+        }
     }
 }
