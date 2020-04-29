@@ -25,23 +25,70 @@ public class Jogador {
         this.capitao = false;
     }
 
-    public long getId(){
+    public static class Builder {
+        private Long id;
+        private Long idTime;
+        private String nome;
+        private LocalDate dataNascimento;
+        private Integer nivelHabilidade;
+        private BigDecimal salario;
+        private Boolean capitao;
+
+        public Builder() {
+        }
+
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder idTime(Long idTime) {
+            this.idTime = idTime;
+            return this;
+        }
+
+        public Builder nome(String nome) {
+            this.nome = nome;
+            return this;
+        }
+
+        public Builder dataNascimento(LocalDate dataNascimento) {
+            this.dataNascimento = dataNascimento;
+            return this;
+        }
+
+        public Builder nivelHabilidade(Integer nivelHabilidade) {
+            this.nivelHabilidade = nivelHabilidade;
+            return this;
+        }
+
+        public Builder salario(BigDecimal salario) {
+            this.salario = salario;
+            return this;
+        }
+
+        public Jogador build() {
+            return new Jogador(id, idTime, nome, dataNascimento, nivelHabilidade, salario);
+        }
+    }
+
+    public long getId() {
         return this.id;
     }
 
-    public String getNome(){
+    public String getNome() {
         return this.nome;
     }
 
-    public Integer getIdade(){
+    public Integer getIdade() {
         return Period.between(dataNascimento, LocalDate.now()).getYears();
     }
 
-    public Integer getNivelHabilidade(){
+    public Integer getNivelHabilidade() {
         return this.nivelHabilidade;
     }
 
-    public BigDecimal getSalario(){
+    public BigDecimal getSalario() {
         return this.salario;
     }
 

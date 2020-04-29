@@ -25,7 +25,54 @@ public class Time {
     }
 
     public Time() {
+    }
 
+    public static class Builder {
+        private long id;
+        private long idCapitao;
+        private String nome;
+        private LocalDate dataCriacao;
+        private String corUniformePrincipal;
+        private String corUniformeSecundario;
+        public List<Jogador> jogadores;
+
+        public Builder() {
+        }
+
+        public Builder id(long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder idCapitao(long idCapitao) {
+            this.idCapitao = idCapitao;
+            return this;
+        }
+
+        public Builder nome(String nome) {
+            this.nome = nome;
+            return this;
+        }
+
+        public Builder dataCriacao(LocalDate dataCriacao) {
+            this.dataCriacao = dataCriacao;
+            return this;
+        }
+
+        public Builder corUniformePrincipal(String corUniformePrincipal) {
+            this.corUniformePrincipal = corUniformePrincipal;
+            return this;
+        }
+
+        public Builder corUniformeSecundario(String corUniformeSecundario) {
+            this.corUniformeSecundario = corUniformeSecundario;
+            return this;
+        }
+
+
+        public Time build() {
+            return new Time(id, nome, dataCriacao, corUniformePrincipal, corUniformeSecundario);
+        }
     }
 
     public long getId() {

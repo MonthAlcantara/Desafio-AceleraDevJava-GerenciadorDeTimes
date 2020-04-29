@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-
 import br.com.codenation.desafio.annotation.Desafio;
 import br.com.codenation.desafio.app.MeuTimeInterface;
 import br.com.codenation.desafio.exceptions.CapitaoNaoInformadoException;
@@ -16,14 +15,20 @@ import br.com.codenation.desafio.exceptions.TimeNaoEncontradoException;
 
 
 public class DesafioMeuTimeApplication implements MeuTimeInterface {
-    List<Time> listaTimes = new ArrayList<Time>();
+    List<Time> listaTimes = new ArrayList<>();
 
     @Desafio("incluirTime")
     public void incluirTime(Long id, String nome, LocalDate dataCriacao, String corUniformePrincipal, String corUniformeSecundario) throws IdentificadorUtilizadoException {
         if (existeTime(id)) {
             throw new IdentificadorUtilizadoException("Erro! Já existe um time com este Id");
         }
-        listaTimes.add(new Time(id, nome, dataCriacao, corUniformePrincipal, corUniformeSecundario));
+        listaTimes.add(new Time.Builder()
+                .id(id)
+                .nome(nome)
+                .dataCriacao(dataCriacao)
+                .corUniformePrincipal(corUniformePrincipal)
+                .corUniformeSecundario(corUniformeSecundario)
+                .build());
     }
 
     @Desafio("incluirJogador")
@@ -41,7 +46,14 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
 
         for (Time time : listaTimes) {
             if (time.getId() == idTime) {
-                time.jogadores.add(new Jogador(id, idTime, nome, dataNascimento, nivelHabilidade, salario));
+                time.jogadores.add(new Jogador.Builder()
+                        .id(id)
+                        .nome(nome)
+                        .idTime(idTime)
+                        .dataNascimento(dataNascimento)
+                        .nivelHabilidade(nivelHabilidade)
+                        .salario(salario)
+                        .build());
             }
         }
     }
@@ -88,7 +100,6 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
             throw new JogadorNaoEncontradoException("Erro! Não foi encontrado jogador com o Id informado");
         }
         String nomeJogador = "";
-
         for (Time time : listaTimes) {
             for (Jogador jogador : time.jogadores) {
                 if (jogador.getId() == idJogador) {
