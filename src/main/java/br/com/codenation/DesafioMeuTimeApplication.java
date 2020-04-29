@@ -21,7 +21,7 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
     @Desafio("incluirTime")
     public void incluirTime(Long id, String nome, LocalDate dataCriacao, String corUniformePrincipal, String corUniformeSecundario) throws IdentificadorUtilizadoException {
         if (existeTime(id)) {
-            throw new IdentificadorUtilizadoException();
+            throw new IdentificadorUtilizadoException("Erro! Já existe um time com este Id");
         }
         listaTimes.add(new Time(id, nome, dataCriacao, corUniformePrincipal, corUniformeSecundario));
     }
@@ -33,10 +33,10 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
             throw new IllegalArgumentException();
         }
         if (!existeTime(idTime)) {
-            throw new TimeNaoEncontradoException();
+            throw new TimeNaoEncontradoException("Erro! Não foi encontrado time com o Id informado");
         }
         if (existeJogador(id)) {
-            throw new IdentificadorUtilizadoException();
+            throw new IdentificadorUtilizadoException("Erro! Já existe um jogador com este Id");
         }
 
         for (Time time : listaTimes) {
@@ -49,7 +49,7 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
     @Desafio("definirCapitao")
     public void definirCapitao(Long idJogador) throws JogadorNaoEncontradoException{
         if (!existeJogador(idJogador)) {
-            throw new JogadorNaoEncontradoException();
+            throw new JogadorNaoEncontradoException("Erro! Não foi encontrado jogador com o Id informado");
         }
         for (Time time : listaTimes) {
             for (Jogador jogador : time.jogadores) {
@@ -66,7 +66,7 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
     @Desafio("buscarCapitaoDoTime")
     public Long buscarCapitaoDoTime(Long idTime) throws TimeNaoEncontradoException, CapitaoNaoInformadoException{
         if (!existeTime(idTime)) {
-            throw new TimeNaoEncontradoException();
+            throw new TimeNaoEncontradoException("Erro! Não foi encontrado time com o Id informado");
         }
         Long idCapitao = 0L;
 
@@ -75,7 +75,7 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
                 if (time.getIdCapitao() != 0) {
                     idCapitao = time.getIdCapitao();
                 } else {
-                    throw new CapitaoNaoInformadoException();
+                    throw new CapitaoNaoInformadoException("Erro! Não foi encontrado capitão com o Id informado");
                 }
             }
         }
@@ -85,7 +85,7 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
     @Desafio("buscarNomeJogador")
     public String buscarNomeJogador(Long idJogador) throws JogadorNaoEncontradoException{
         if (!existeJogador(idJogador)) {
-            throw new JogadorNaoEncontradoException();
+            throw new JogadorNaoEncontradoException("Erro! Não foi encontrado jogador com o Id informado");
         }
         String nomeJogador = "";
 
@@ -102,7 +102,7 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
     @Desafio("buscarNomeTime")
     public String buscarNomeTime(Long idTime) throws TimeNaoEncontradoException{
         if (!existeTime(idTime)) {
-            throw new TimeNaoEncontradoException();
+            throw new TimeNaoEncontradoException("Erro! Não foi encontrado time com o Id informado");
         }
 
         String nomeTime = "";
@@ -119,7 +119,7 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
     public List<Long> buscarJogadoresDoTime(Long idTime) throws TimeNaoEncontradoException{
         List<Long> listaIdJogadores = new ArrayList<>();
         if (!existeTime(idTime)) {
-            throw new TimeNaoEncontradoException();
+            throw new TimeNaoEncontradoException("Erro! Não foi encontrado time com o Id informado");
         }
 
         for (Time time : listaTimes) {
@@ -136,7 +136,7 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
     @Desafio("buscarMelhorJogadorDoTime")
     public Long buscarMelhorJogadorDoTime(Long idTime) throws TimeNaoEncontradoException{
         if (!existeTime(idTime)) {
-            throw new TimeNaoEncontradoException();
+            throw new TimeNaoEncontradoException("Erro! Não foi encontrado time com o Id informado");
         }
         Long idMelhorJogador = 0L;
 
@@ -152,7 +152,7 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
     @Desafio("buscarJogadorMaisVelho")
     public Long buscarJogadorMaisVelho(Long idTime) throws TimeNaoEncontradoException{
         if (!existeTime(idTime)) {
-            throw new TimeNaoEncontradoException();
+            throw new TimeNaoEncontradoException("Erro! Não foi encontrado time com o Id informado");
         }
         Long idJogadorMaisVelho = 0L;
 
@@ -178,7 +178,7 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
     @Desafio("buscarJogadorMaiorSalario")
     public Long buscarJogadorMaiorSalario(Long idTime) throws TimeNaoEncontradoException{
         if (!existeTime(idTime)) {
-            throw new TimeNaoEncontradoException();
+            throw new TimeNaoEncontradoException("Erro! Não foi encontrado time com o Id informado");
         }
         Long idJogadorMaiorSalario = 0L;
 
@@ -194,7 +194,7 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
     @Desafio("buscarSalarioDoJogador")
     public BigDecimal buscarSalarioDoJogador(Long idJogador) throws JogadorNaoEncontradoException{
         if (!existeJogador(idJogador)) {
-            throw new JogadorNaoEncontradoException();
+            throw new JogadorNaoEncontradoException("Erro! Não foi encontrado jogador com o Id informado");
         }
         BigDecimal salarioJogador = new BigDecimal("0");
 
@@ -236,7 +236,7 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
             }
         }
         if (listaJogadores.isEmpty()) {
-            return new ArrayList<Long>();
+            return new ArrayList<>();
         } else {
             return idJogadores;
         }
@@ -245,7 +245,7 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
     @Desafio("buscarCorCamisaTimeDeFora")
     public String buscarCorCamisaTimeDeFora(Long timeDaCasa, Long timeDeFora) throws TimeNaoEncontradoException{
         if (!existeTime(timeDaCasa) || !existeTime(timeDeFora)) {
-            throw new TimeNaoEncontradoException();
+            throw new TimeNaoEncontradoException("Erro! Não foi encontrado time com o Id informado");
         }
 
         Time timeCasa = new Time();
@@ -258,7 +258,7 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
                 timeFora = time;
             }
         }
-        if (timeCasa.getCorUniformePrincipal() != timeFora.getCorUniformePrincipal()) {
+        if (!timeCasa.getCorUniformePrincipal().equals(timeFora.getCorUniformePrincipal())) {
             return timeFora.getCorUniformePrincipal();
         } else {
             return timeFora.getCorUniformeSecundario();
