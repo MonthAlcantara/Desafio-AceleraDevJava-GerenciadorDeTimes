@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import br.com.codenation.desafio.annotation.Desafio;
 import br.com.codenation.desafio.app.MeuTimeInterface;
@@ -54,16 +56,12 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
         if (!existeJogador(idJogador)) {
             throw new JogadorNaoEncontradoException("Erro! Não foi encontrado jogador com o Id informado");
         }
-        for (Time time : listaTimes) {
-            for (Jogador jogador : time.jogadores) {
+        for (Time time : listaTimes)
+            for (Jogador jogador : time.jogadores)
                 if (jogador.getId() == idJogador) {
                     jogador.setCapitao(true);
                     time.setIdCapitao(jogador.getId());
-                } else {
-                    jogador.setCapitao(false);
-                }
-            }
-        }
+                } else jogador.setCapitao(false);
     }
 
     @Desafio("buscarCapitaoDoTime")
@@ -195,19 +193,20 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
 
     @Desafio("buscarSalarioDoJogador")
     public BigDecimal buscarSalarioDoJogador(Long idJogador) throws JogadorNaoEncontradoException {
-        if (!existeJogador(idJogador)) {
-            throw new JogadorNaoEncontradoException("Erro! Não foi encontrado jogador com o Id informado");
-        }
-        BigDecimal salarioJogador = new BigDecimal("0");
+        if (existeJogador(idJogador)) {
+            BigDecimal salarioJogador = new BigDecimal("0");
 
-        for (Time time : listaTimes) {
-            for (Jogador jogador : time.jogadores) {
-                if (jogador.getId() == idJogador) {
-                    salarioJogador = jogador.getSalario();
+            for (Time time : listaTimes) {
+                for (Jogador jogador : time.jogadores) {
+                    if (jogador.getId() == idJogador) {
+                        salarioJogador = jogador.getSalario();
+                    }
                 }
             }
+            return salarioJogador;
+        } else {
+            throw new JogadorNaoEncontradoException("Erro! Não foi encontrado jogador com o Id informado");
         }
-        return salarioJogador;
     }
 
     @Desafio("buscarTopJogadores")
@@ -233,9 +232,7 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
                     return j2.getNivelHabilidade().compareTo(j1.getNivelHabilidade());
                 }
             });
-            for (int i = 0; i < top; i++) {
-                idJogadores.add(listaJogadores.get(i).getId());
-            }
+            idJogadores = IntStream.range(0, top).mapToObj(i -> listaJogadores.get(i).getId()).collect(Collectors.toList());
         }
         if (listaJogadores.isEmpty()) {
             return new ArrayList<>();
@@ -246,9 +243,8 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
 
     @Desafio("buscarCorCamisaTimeDeFora")
     public String buscarCorCamisaTimeDeFora(Long timeDaCasa, Long timeDeFora) throws TimeNaoEncontradoException {
-        if (!existeTime(timeDaCasa) || !existeTime(timeDeFora)) {
+        if (!existeTime(timeDaCasa) || !existeTime(timeDeFora))
             throw new TimeNaoEncontradoException("Erro! Não foi encontrado time com o Id informado");
-        }
 
         Time timeCasa = new Time();
         Time timeFora = new Time();
@@ -277,14 +273,9 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
 
     private void validarJogador(Long id, Long idTime, Integer nivelHabilidade)
             throws IllegalArgumentException, TimeNaoEncontradoException, IdentificadorUtilizadoException {
-        if (id < 0 || idTime < 0 || nivelHabilidade < 0 || nivelHabilidade > 100) {
-            throw new IllegalArgumentException();
-        }
-        if (!existeTime(idTime)) {
+        if (id < 0 || idTime < 0 || nivelHabilidade < 0 || nivelHabilidade > 100) throw new IllegalArgumentException();
+        if (!existeTime(idTime))
             throw new TimeNaoEncontradoException("Erro! Não foi encontrado time com o Id informado");
-        }
-        if (existeJogador(id)) {
-            throw new IdentificadorUtilizadoException("Erro! Já existe um jogador com este Id");
-        }
+        if (existeJogador(id)) throw new IdentificadorUtilizadoException("Erro! Já existe um jogador com este Id");
     }
 }
